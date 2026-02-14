@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      margin-top: 0;
+      color: #1f2937;
+    }
+    input[type="file"], button {
+      margin-top: 1rem;
+      display: block;
+    }
+    button {
+      border: none;
+      background: #0d6efd;
+      color: white;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0b5ed7;
+    }
+    .error {
+      margin-top: 1rem;
+      color: #b91c1c;
+      font-weight: bold;
+    }
+    .result {
+      margin-top: 1.5rem;
+      background: #eff6ff;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Currency Detector (INR Notes)</h1>
+    <p>Upload an image of an Indian currency note (e.g., ₹200 note). The app uses OCR to detect text and infer the denomination.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+      <label for="image">Currency Image:</label>
+      <input id="image" name="image" type="file" accept="image/*" required />
+      <button type="submit">Detect Currency</button>
+    </form>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+      <div class="result">
+        <h2>Detection Result</h2>
+        <p><strong>Currency:</strong> {{ result.currency if result.currency else "Unknown" }}</p>
+        <p><strong>Denomination:</strong>
+          {% if result.denomination %}
+            ₹{{ result.denomination }}
+          {% else %}
+            Unknown
+          {% endif %}
+        </p>
+        <h3>OCR Text</h3>
+        <pre>{{ result.ocr_text }}</pre>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
